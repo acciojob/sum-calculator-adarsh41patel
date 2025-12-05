@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 
 export default function SumCalculator() {
   const [numbers, setNumbers] = useState([]);
+  const [inputValue, setInputValue] = useState("");
   const [sum, setSum] = useState(0);
-  const [currentValue, setCurrentValue] = useState("");
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -14,14 +14,16 @@ export default function SumCalculator() {
     return () => clearTimeout(timer);
   }, [numbers]);
 
-  const handleBlur = () => {
-    const parsed = parseInt(currentValue, 10);
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      const num = parseInt(inputValue, 10);
 
-    if (!isNaN(parsed)) {
-      setNumbers((prev) => [...prev, parsed]);
+      if (!isNaN(num)) {
+        setNumbers((prev) => [...prev, num]);
+      }
+
+      setInputValue("");
     }
-
-    setCurrentValue("");
   };
 
   return (
@@ -30,9 +32,9 @@ export default function SumCalculator() {
 
       <input
         type="number"
-        value={currentValue}
-        onChange={(e) => setCurrentValue(e.target.value)}
-        onBlur={handleBlur}
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        onKeyDown={handleKeyDown}
       />
 
       <p>Sum: {sum}</p>
