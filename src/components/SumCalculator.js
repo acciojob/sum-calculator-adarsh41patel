@@ -14,16 +14,14 @@ export default function SumCalculator() {
     return () => clearTimeout(timer);
   }, [numbers]);
 
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
-      const parsed = parseInt(currentValue, 10);
+  const handleBlur = () => {
+    const parsed = parseInt(currentValue, 10);
 
-      if (!isNaN(parsed)) {
-        setNumbers((prev) => [...prev, parsed]);
-      }
-
-      setCurrentValue(""); // clear input
+    if (!isNaN(parsed)) {
+      setNumbers((prev) => [...prev, parsed]);
     }
+
+    setCurrentValue("");
   };
 
   return (
@@ -34,7 +32,7 @@ export default function SumCalculator() {
         type="number"
         value={currentValue}
         onChange={(e) => setCurrentValue(e.target.value)}
-        onKeyDown={handleKeyDown}
+        onBlur={handleBlur}
       />
 
       <p>Sum: {sum}</p>
