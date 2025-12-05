@@ -4,11 +4,10 @@ export default function SumCalculator() {
   const [numbers, setNumbers] = useState([]);
   const [sum, setSum] = useState(0);
 
-  // Recalculate sum whenever numbers change
+  // Recalculate sum asynchronously
   useEffect(() => {
-    // Run asynchronously to avoid UI blocking
     const timer = setTimeout(() => {
-      const total = numbers.reduce((acc, num) => acc + num, 0);
+      const total = numbers.reduce((acc, n) => acc + n, 0);
       setSum(total);
     }, 0);
 
@@ -26,20 +25,20 @@ export default function SumCalculator() {
       setNumbers((prev) => [...prev, parsed]);
     }
 
-    e.target.value = ""; // clear input after each entry
+    e.target.value = ""; // clear input
   };
 
   return (
-    <div style={{ textAlign: "center", marginTop: "40px" }}>
+    <div style={{ textAlign: "center" }}>
       <h1>Sum Calculator</h1>
 
       <input
         type="number"
         onChange={handleInput}
-        style={{ width: "200px", padding: "10px", fontSize: "18px" }}
       />
 
-      <h3>Sum: {sum}</h3>
+      {/* REQUIRED BY CYPRESS */}
+      <p>Sum: {sum}</p>
     </div>
   );
 }
