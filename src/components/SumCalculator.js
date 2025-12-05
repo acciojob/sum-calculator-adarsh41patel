@@ -3,8 +3,8 @@ import React, { useState, useEffect } from "react";
 export default function SumCalculator() {
   const [numbers, setNumbers] = useState([]);
   const [sum, setSum] = useState(0);
+  const [currentValue, setCurrentValue] = useState("");
 
-  // Recalculate sum asynchronously
   useEffect(() => {
     const timer = setTimeout(() => {
       const total = numbers.reduce((acc, n) => acc + n, 0);
@@ -14,18 +14,16 @@ export default function SumCalculator() {
     return () => clearTimeout(timer);
   }, [numbers]);
 
-  const handleInput = (e) => {
-    const value = e.target.value;
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      const parsed = parseInt(currentValue, 10);
 
-    if (value === "") return;
+      if (!isNaN(parsed)) {
+        setNumbers((prev) => [...prev, parsed]);
+      }
 
-    const parsed = parseInt(value, 10);
-
-    if (!isNaN(parsed)) {
-      setNumbers((prev) => [...prev, parsed]);
+      setCurrentValue(""); // clear input
     }
-
-    e.target.value = ""; // clear input
   };
 
   return (
@@ -34,10 +32,11 @@ export default function SumCalculator() {
 
       <input
         type="number"
-        onChange={handleInput}
+        value={currentValue}
+        onChange={(e) => setCurrentValue(e.target.value)}
+        onKeyDown={handleKeyDown}
       />
 
-      {/* REQUIRED BY CYPRESS */}
       <p>Sum: {sum}</p>
     </div>
   );
